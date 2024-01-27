@@ -57,6 +57,19 @@
     <script src="scripts/check-username-length.js"></script>
   </body>
 </html> -->
+<script>
+    function validate() {
+        validateEmailAddressSimple(document.getElementById('inputEmail4'))
+    }
+
+    function init () {
+        document.getElementById('submit-reg-form').onsubmit = validate();
+    }
+
+    window.onload = init();
+
+</script>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
