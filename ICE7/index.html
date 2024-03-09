@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script
+        src="https://code.jquery.com/jquery-3.6.3.min.js"
+        integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU="
+        crossorigin="anonymous">
+    </script>
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="style/style.css"/>
+    <title>Pictures from pixabay</title>
+    
+</head>
+<body>
+    <div class="blog-column"></div>
+    <script>
+        $(document).ready(function() {
+            const API_KEY = '42776919-6cedf50850aae2d9d390d108b'; // API Key
+            const API_URL = 'https://pixabay.com/api/';
+            const IMAGE_TYPE = 'photo';
+            const SEARCH = 'Galaxy'; // Query
+            const PER_PAGE = 30;
+            const ORIENTATION = 'horizontal';
+
+            // Create api url.
+            const apiUrl = `${API_URL}?key=${API_KEY}&q=${SEARCH}&per_page=${PER_PAGE}&image_type=${IMAGE_TYPE}&orientation=${ORIENTATION}`;
+
+            // Fetching data from Pixabay API
+            $.getJSON(apiUrl, function (data)
+            {
+                // Check for pictures
+                if (data.hits.length > 0) {
+                    // For each picture
+                    $.each(data.hits, function (index, image) {
+                        // Check if not vertical
+                        if (image.imageHeight <= image.imageWidth) {
+
+                            // Create image element
+                            const img = $('<img>').attr('src', image.webformatURL).attr('alt', image.tags);
+
+                            // Create paragraph element for card
+                            const paragraph = $('<p>').text(image.tags);
+
+                            // Create div element for card
+                            const card = $('<div>').addClass('card').append(img, paragraph);
+
+                            // Append card to blog-column
+                            $('.blog-column').append(card);
+                        }
+                    });
+                }
+                else
+                {
+                    // If no images found
+                    $('.blog-column').append('<p>Images found</p>');
+                }
+            });
+        });
+    </script>
+    <div>
+        <figure>
+            <img id="pixabay-logo" src="images/pixabay.svg" alt="pixabay logo">
+            <figcaption>All images provided by Pixabay</figcaption>
+        </figure>
+    </div>
+    <script src="scripts/pixabay.js"></script>
+</body>
+</html>
